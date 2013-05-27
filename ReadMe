@@ -1,0 +1,6 @@
+Initially this all was intended to allow AHK script to get active layout in console windows
+(see getconkbl/switchkblayout.ahk), but I guess it could be used elsevere too.
+
+getconhost: supporting routines
+getconkbl: dll version
+getlayout: test app
