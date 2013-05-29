@@ -13,6 +13,12 @@ GetConsoleKbLayoutModule := DllCall("LoadLibrary", "Str", "getconkbl.dll")
 GetConsoleKbLayoutInit := DllCall("getconkbl\Initialize", Int, 0)
 ;MsgBox %GetConsoleKbLayoutInit%
 
+CapsDown := 0
+
+; These two are needed to allow RAlt+ and RWin+ combinations to be properly sent to apps
+~RAlt & RWin::
+return
+
 ~RWin & RAlt::
 return
 
@@ -23,8 +29,7 @@ ifWinActive ahk_class #32770
 ; these don't react to WM_INPUTLANGCHANGEREQUEST, need to send it to main window
 ; PostThreadMessage doesn't work here either
 
-    WinGet, Active_Window_PID, PID, A ; получаем PID активного окна
-
+    WinGet, Active_Window_PID, PID, A ; get PID of active window
 	SendMessage, 0x50, 0x1, 0x4190419, , ahk_pid %Active_Window_PID% ; ru
 }
 else
@@ -36,7 +41,7 @@ return
 RAlt::
 ifWinActive ahk_class #32770
 {
-    WinGet, Active_Window_PID, PID, A
+    WinGet, Active_Window_PID, PID, A ; get PID of active window
 	SendMessage, 0x50, 0x1, 0x4090409, , ahk_pid %Active_Window_PID% ; en/qwerty
 }
 else
@@ -44,9 +49,6 @@ else
 	SendMessage, 0x50, 0x1, 0x4090409, , A ; en/qwerty
 }
 return
-
-
-CapsDown := 0
 
 *CapsLock::
 	if not CapsDown {
